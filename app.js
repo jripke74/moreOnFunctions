@@ -58,37 +58,71 @@ startGameBtn.addEventListener('click', () => {
   } else {
     winner = getWinner(computerChoice);
   }
-  let message = `You picked ${playerChoice || DEFAULT_USER_CHOICE}, computer picked ${computerChoice}, therefore you `
+  let message = `You picked ${
+    playerChoice || DEFAULT_USER_CHOICE
+  }, computer picked ${computerChoice}, therefore you `;
   if (winner === RESULT_DRAW) {
-    message += `had a draw.`
+    message += `had a draw.`;
   } else if (winner === RESULT_PLAYER_WINS) {
-    message += `won.`
+    message += `won.`;
   } else {
-    message += `lost.`
+    message += `lost.`;
   }
   alert(message);
   gameIsRunning = false;
 });
 
-const sumUp = (...numbers) => {
+const combine = (resultHandler, operation, ...numbers) => {
   const validateNumber = (number) => {
     return isNaN(number) ? 0 : number;
-  }
+  };
   let sum = 0;
   for (const num of numbers) {
+    if (operation === 'ADD') {
+      sum += validateNumber(num);
+    } else {
+      sum -= validateNumber(num);
+    }
     sum += validateNumber(num);
   }
-  return sum;
-}
+  resultHandler(sum, `The result after adding all numbers is`);
+};
 
-const subtractUp = function() {
-  let sum = 0;
-  for (const num of arguments) {  // don't use this.
-    sum -= num;
-  }
-  return sum;
-}
+// const subtractUp = function (resultHandler, ...numbers) {
+//   let sum = 0;
+//   for (const num of numbers) {
+//     // don't use this.
+//     sum -= num;
+//   }
+//   resultHandler(sum), `The result after subtractin all numbers is`;
+// };
 
-console.log(sumUp(1, 2, 4, 5));
-console.log(sumUp(1, 1, 1, 1));
-console.log(subtractUp(1, 2, 3, 4, 5));
+const showResult = (messageText, result) => {
+  alert(`${messageText} ${result}`);
+};
+
+combine(
+  showResult.bind(this, 'The result after adding all numbers is:'),
+  'ADD',
+  1,
+  2,
+  4,
+  5
+);
+combine(
+  showResult.bind(this, 'The result after adding all numbers is:'),
+  'ADD',
+  1,
+  'lkjl',
+  1,
+  1
+);
+combine(
+  showResult.bind(this, 'The result after subtracting all numbers is:'),
+  'SUBTRACT',
+  1,
+  2,
+  3,
+  4,
+  5
+);
